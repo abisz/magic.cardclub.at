@@ -1,15 +1,7 @@
+import { fetchEvents } from "@/lib/events";
+
 async function getEvents() {
-    const res = await fetch(
-        "http://localhost:1337/api/events?sort=startDateTime:asc",
-        { cache: "no-store" }
-    );
-
-    if (!res.ok) {
-        throw new Error("Failed to fetch events");
-    }
-
-    const data = await res.json();
-    return data.data;
+  return fetchEvents();
 }
 
 export default async function EventsPage() {
@@ -20,10 +12,10 @@ export default async function EventsPage() {
             <h1 className="text-4xl font-bold">Upcoming Events</h1>
 
             <div className="mt-8 space-y-6">
-                {events.map((event: any) => (
+                {events.map((event) => (
                     <article key={event.id} className="rounded-xl border p-6">
                         <p className="text-sm uppercase tracking-wide">
-                            {event.eventType}
+                            {event.eventType ?? "event"}
                         </p>
 
                         <h2 className="mt-2 text-2xl font-semibold">
@@ -37,9 +29,9 @@ export default async function EventsPage() {
                             })}
                         </p>
 
-                        <p className="mt-2">{event.location}</p>
+                        {event.location && <p className="mt-2">{event.location}</p>}
 
-                        {event.entryFee && (
+                        {event.entryFee !== null && (
                             <p className="mt-2">Entry: {event.entryFee}</p>
                         )}
                     </article>

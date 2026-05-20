@@ -440,6 +440,36 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCubeCube extends Struct.CollectionTypeSchema {
+  collectionName: 'cubes';
+  info: {
+    displayName: 'Cube';
+    pluralName: 'cubes';
+    singularName: 'cube';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    cubeCobraId: Schema.Attribute.String;
+    description: Schema.Attribute.Text;
+    difficulty: Schema.Attribute.Enumeration<['beginner', 'regular', 'expert']>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::cube.cube'> &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    shortDescription: Schema.Attribute.Text;
+    slug: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   collectionName: 'events';
   info: {
@@ -1014,6 +1044,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::cube.cube': ApiCubeCube;
       'api::event.event': ApiEventEvent;
       'api::message.message': ApiMessageMessage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
